@@ -66,13 +66,13 @@ describe('stale', () => {
     const issues = []
     for (let i = 1; i <= issueCount; i++) {
       const labels = (i <= staleCount) ? [{ name: staleLabel }] : []
-      issues.push({ number: i, labels: labels })
+      issues.push({ number: i, labels: labels, user: {login: 'sample-user'}})
     }
 
     const prs = []
     for (let i = 101; i <= 100 + issueCount; i++) {
       const labels = (i <= 100 + staleCount) ? [{ name: staleLabel }] : []
-      prs.push({ number: i, labels: labels })
+      prs.push({ number: i, labels: labels, user: {login: 'sample-user'}})
     }
 
     github.search.issues = ({ q, sort, order, per_page }) => {
@@ -108,7 +108,7 @@ describe('stale', () => {
         comments++
         return Promise.resolve(notFoundError)
       })
-      github.issues.edit = ({ owner, repo, number, state }) => {
+      github.issues.update = ({ owner, repo, number, state }) => {
         if (state === 'closed') {
           closed++
         }
