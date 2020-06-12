@@ -20,9 +20,12 @@ A `.github/stale.yml` file is required to enable the plugin. The file can be emp
 # Number of days of inactivity before an Issue or Pull Request becomes stale
 daysUntilStale: 60
 
-# Number of days of inactivity before a stale Issue or Pull Request is closed.
+# Number of days of inactivity before an Issue or Pull Request with the stale label is closed.
 # Set to false to disable. If disabled, issues still need to be closed manually, but will remain marked as stale.
 daysUntilClose: 7
+
+# Only issues or pull requests with all of these labels are check if stale. Defaults to `[]` (disabled)
+onlyLabels: []
 
 # Issues or Pull Requests with these labels will never be considered stale. Set to `[]` to disable
 exemptLabels:
@@ -35,6 +38,9 @@ exemptProjects: false
 
 # Set to true to ignore issues in a milestone (defaults to false)
 exemptMilestones: false
+
+# Set to true to ignore issues with an assignee (defaults to false)
+exemptAssignees: false
 
 # Label to use when marking as stale
 staleLabel: wontfix
@@ -74,13 +80,21 @@ limitPerRun: 30
 
 ## How are issues and pull requests considered stale?
 
-The app uses GitHub's [updated](https://help.github.com/articles/searching-issues/#search-based-on-when-an-issue-or-pull-request-was-created-or-last-updated) search qualifier to determine staleness. Any change to an issues and pull request is considered an update, including comments, changing labels, applying or removing milestones,  or pushing commits.
+The app uses GitHub's [updated](https://help.github.com/articles/searching-issues/#search-based-on-when-an-issue-or-pull-request-was-created-or-last-updated) search qualifier to determine staleness. Any change to an issue or pull request is considered an update, including comments, changing labels, applying or removing milestones, or pushing commits.
 
 An easy way to check and see which issues or pull requests will initially be marked as stale is to add the `updated` search qualifier to either the issue or pull request page filter for your repository: `updated:<2017-07-01`. Adjust the date to be 60 days ago (or whatever you set for `daysUntilStale`) to see which issues or pull requests will be marked.
 
 ## Why did only some issues and pull requests get marked stale?
 
 To avoid triggering abuse prevention mechanisms on GitHub, only 30 issues and pull requests will be marked or closed per hour. If your repository has more than that, it will just take a few hours or days to mark them all.
+
+## How long will it take?
+
+The app runs on a scheduled basis and in batches in order to avoid hitting rate limit ceilings.
+
+This means that even after you initially install the GitHub configuration and add the `stale.yml` file, you may not see it act immediately.
+
+If the bot doesn't run within 24 hours of initial setup, feel free to [open an issue](https://github.com/probot/stale/issues/new) and we can investigate further.
 
 ## Is closing stale issues really a good idea?
 
@@ -102,4 +116,4 @@ Note that all interactions fall under the [Probot Code of Conduct](https://githu
 
 ## License
 
-[ISC](LICENCE) Copyright © 2017-2018 Brandon Keepers
+[ISC](LICENSE) Copyright © 2017-2018 Brandon Keepers
